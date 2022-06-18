@@ -6,23 +6,30 @@ set(CMAKE_CXX_STANDARD 14)
 include(FetchContent)
 FetchContent_Declare(
         googletest
-        URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.10.0
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+FetchContent_GetProperties(googletest)
+if (NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+endif ()
 
 add_executable(parking_lot src/main.cpp)
 enable_testing()
 
 add_executable(
-        hello_test
-        test/test.cpp
+        parking_lot_test
+        test/parking_lot.t.cpp
 )
 target_link_libraries(
-        hello_test
+        parking_lot_test
         gtest_main
+        gmock
 )
+target_include_directories(parking_lot_test PRIVATE src)
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(parking_lot_test)
