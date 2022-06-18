@@ -12,12 +12,12 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(parking_lot main.cpp )
+add_executable(parking_lot src/main.cpp)
 enable_testing()
 
 add_executable(
         hello_test
-        test.cpp
+        test/test.cpp
 )
 target_link_libraries(
         hello_test
